@@ -93,7 +93,12 @@ fun MoMoCalcScreen(){
 
     val isError = amountInput.isNotEmpty() && numericAmount == null
 
-    val fee = (numericAmount ?: 0.0) * 0.03
+
+    val fee = when {
+        numericAmount == null -> 0.0
+        numericAmount in 0.0..2499999.0 -> numericAmount * 0.03
+        else -> numericAmount * 0.015
+    }
 
     val formattedFee = "UGX %,.0f".format(fee)
 
