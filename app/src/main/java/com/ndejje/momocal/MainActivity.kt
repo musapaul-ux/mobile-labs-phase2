@@ -38,13 +38,14 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.ndejje.momocal.ui.theme.MoMo_CalculatorTheme
+//import androidx.content.res.Configuration
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            MoMo_CalculatorTheme() {
+            MoMoAppTheme { // replaces raw MaterialTheme(..)
  //               our custom theme (part b)
                 Surface(modifier = Modifier.fillMaxSize()){
                     Scaffold(
@@ -203,16 +204,29 @@ fun MoMoTopBar(){
 
 
 @Preview(
+    name = "Light Mode",
     showBackground = true,
     showSystemUi = true
 )
 @Composable
-fun MoMoCalcPreview() {
-    MaterialTheme{
+fun previewLight() {
+    MoMoAppTheme(darkTheme = false){
         MoMoCalcScreen()
     }
 }
 
+
+@Preview(
+    name = "Dark Mode",
+    showBackground = true,
+    showSystemUi = true
+)
+@Composable
+fun previewDark() {
+    MoMoAppTheme(darkTheme = true){
+        MoMoCalcScreen()
+    }
+}
 
 
 
