@@ -38,7 +38,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.ndejje.momocal.ui.theme.MoMo_CalculatorTheme
-//import androidx.content.res.Configuration
+import android.content.res.Configuration
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -126,8 +126,7 @@ fun MoMoCalcScreen(
 
     val numericAmount = amountInput.toDoubleOrNull()
 
-    val isError = amountInput.isNotEmpty() && numericAmount == null
-
+    val isError = amountInput.isNotEmpty() && (numericAmount == null || numericAmount < 0)
 
     val fee = when {
         numericAmount == null -> 0.0
@@ -163,11 +162,18 @@ fun MoMoCalcScreen(
 
         Spacer(modifier = Modifier.height(dimensionResource(R.dimen.spacing_medium)))
 
-        Text(
-            text = stringResource(R.string.fee_label, formattedFee),
-            style = MaterialTheme.typography.bodyLarge,
-            textAlign = TextAlign.Center
-        )
+       Surface(
+           shape = MaterialTheme.shapes.medium, // 16dp rounded corners
+           color = MaterialTheme.colorScheme.secondary.copy(alpha =0.15f),
+           modifier = Modifier.fillMaxWidth()
+       ){
+           Text(
+               text = stringResource(R.string.fee_label, formattedFee),
+               style = MaterialTheme.typography.bodyLarge,
+               textAlign = TextAlign.Center,
+               modifier = Modifier.padding(16.dp)
+           )
+       }
     }
 }
 
@@ -209,7 +215,7 @@ fun MoMoTopBar(){
     showSystemUi = true
 )
 @Composable
-fun previewLight() {
+fun PreviewLight() {
     MoMoAppTheme(darkTheme = false){
         MoMoCalcScreen()
     }
@@ -222,11 +228,23 @@ fun previewLight() {
     showSystemUi = true
 )
 @Composable
-fun previewDark() {
+fun PreviewDark() {
     MoMoAppTheme(darkTheme = true){
         MoMoCalcScreen()
     }
 }
 
-
+@Preview(
+    name = "Fee Card - Light",
+    showBackground = true,
+    uiMode = Configuration.UI_MODE_NIGHT_YES
+)
+@Composable
+fun PreviewFeeCard(){
+    MoMoAppTheme{
+        Surface(modifier = Modifier.padding(16.dp)){
+            MoMoCalcScreen()
+        }
+    }
+}
 
